@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
@@ -26,8 +27,8 @@ namespace OpenGL
             GL.Enable(EnableCap.DepthTest);
             GL.DepthFunc(DepthFunction.Less);
 
-            GL.MatrixMode(MatrixMode.Modelview);
-            GL.Rotate(-45, 1, 1, 0);
+            // GL.MatrixMode(MatrixMode.Modelview);
+            // GL.Rotate(-45, 1, 1, 0);
 
             base.OnLoad(e);
         }
@@ -40,11 +41,7 @@ namespace OpenGL
             GL.LoadIdentity();
             GL.Scale(perspective, perspective, perspective);
 
-            ShapeExamples.Cube();
-            // GL.Begin(PrimitiveType.Quads);
-            // Painter.PaintCube(Vector3.Zero, 1);
-            // Painter.PaintSquare(new Vector3(0, 0, 0), new Vector3(0, 0.5f, 0), new Vector3(0.5f, 0.5f, 0), new Vector3(0.5f, 0, 0));
-            // GL.End();
+            ShapeExamples.Cone();
 
             Context.SwapBuffers();
             base.OnRenderFrame(e);

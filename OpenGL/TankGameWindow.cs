@@ -41,7 +41,7 @@ namespace OpenGL
             GL.LoadIdentity();
             GL.Scale(perspective, perspective, perspective);
 
-            ShapeExamples.Cone();
+            TankPainter.DrawTank(2d);
 
             Context.SwapBuffers();
             base.OnRenderFrame(e);
@@ -106,8 +106,8 @@ namespace OpenGL
                     turretRotationAngle -= 5.0;
             }
 
-            if (keyboardState.IsKeyDown(Key.W)) perspective += 0.05;
-            if (keyboardState.IsKeyDown(Key.S)) perspective -= 0.05;
+            if (keyboardState.IsKeyDown(Key.W)) perspective += 0.01;
+            if (keyboardState.IsKeyDown(Key.S)) perspective -= 0.01;
         }
 
         private void ProcessMouseState()

@@ -57,10 +57,18 @@
         <Compile Include="Properties\AssemblyInfo.cs" />
         <Compile Include="ShapeExamples.cs" />
         <Compile Include="TankGameWindow.cs" />
+        <Compile Include="TankPainter.cs" />
     </ItemGroup>
     <ItemGroup>
       <None Include="OpenTK.dll.config" />
       <None Include="packages.config" />
+    </ItemGroup>
+    <ItemGroup>
+      <Content Include="Waffentrager\Description.txt" />
+      <Content Include="Waffentrager\References\cebqkexro8m.jpg" />
+      <Content Include="Waffentrager\References\G98_Waffentrager_E100.png" />
+      <Content Include="Waffentrager\References\germany-g98_waffentrager_e100_p_3.jpg" />
+      <Content Include="Waffentrager\References\obz3_16.jpg" />
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
     <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -8,9 +8,7 @@ namespace OpenGL
     {
         public static void Cube()
         {
-            GL.Begin(PrimitiveType.Quads);
             Painter.PaintCube(Vector3.Zero, 1);
-            GL.End();
         }
 
         public static void Square()
@@ -50,10 +48,8 @@ namespace OpenGL
 
         public static void Circle()
         {
-            GL.Begin(PrimitiveType.Triangles);
             GL.Color3(Color.GreenYellow);
             Painter.PaintCircle();
-            GL.End();
         }
 
         public static void Pyramid()
@@ -68,20 +64,22 @@ namespace OpenGL
 
         public static void Sphere()
         {
-            GL.Begin(PrimitiveType.Quads);
-            GL.End();
+            Painter.PaintSphere();
         }
 
         public static void Spiral()
         {
-            GL.Begin(PrimitiveType.Quads);
-            GL.End();
+            Painter.PaintSpiral();
+        }
+        
+        public static void LogarithmicSpiral()
+        {
+            Painter.PaintLogarithmicSpiral();
         }
 
         public static void Torus()
         {
-            GL.Begin(PrimitiveType.Quads);
-            GL.End();
+            Painter.PaintTorus();
         }
     }
 }

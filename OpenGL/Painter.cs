@@ -20,7 +20,9 @@ namespace OpenGL
             var leftBTCorner = new Vector3(center.X - step, center.Y + step, center.Z + step);
             var rightBTCorner = new Vector3(center.X + step, center.Y + step, center.Z + step);
             var rightBBCorner = new Vector3(center.X + step, center.Y - step, center.Z + step); 
-
+            
+            GL.Begin(PrimitiveType.Quads);
+            
             // front side
             GL.Color3(Color.IndianRed);
             PaintSquare(leftFBCorner, leftFTCorner, rightFTCorner, rightFBCorner);
@@ -44,6 +46,8 @@ namespace OpenGL
             // left side
             GL.Color3(Color.YellowGreen);
             PaintSquare(leftFBCorner, leftFTCorner, leftBTCorner, leftBBCorner);
+            
+            GL.End();
         }
 
         public static void PaintSquare(Vector3 point1, Vector3 point2, Vector3 point3, Vector3 point4)
@@ -53,7 +57,7 @@ namespace OpenGL
             GL.Vertex3(point3);
             GL.Vertex3(point4);
         }
-        
+
         public static void PaintTriangle(Vector3 point1, Vector3 point2, Vector3 point3)
         {
             GL.Vertex3(point1);
@@ -82,6 +86,7 @@ namespace OpenGL
             var newX = x;
             var newY = y;
             
+            GL.Begin(PrimitiveType.Triangles);
             for (int i = 0; i <= 360; i += angle)
             {
                 GL.Vertex2(center);
@@ -93,6 +98,7 @@ namespace OpenGL
                 
                 GL.Vertex2(newX, newY);
             }
+            GL.End();
         }
 
         public static void PaintRegularPyramid(Vector3 center, float sideSize, int sideCount)
@@ -185,17 +191,142 @@ namespace OpenGL
         
         public static void PaintSphere()
         {
+            var x = 0f;
+            var y = 0f;
+            var z = 1f;
+            
+            GL.Begin(PrimitiveType.Lines);
+            GL.Color3(Color.IndianRed);
 
+            var step = 5;
+            
+            /*for (int u = -180; u <= 180; u += step)
+            {
+                for (int v = -90; v <= 90; v += step)
+                {
+                    GL.Vertex3(x, y, z);
+                    var radU = u * (Math.PI / 180);
+                    var radV = v * (Math.PI / 180);
+                    x = (float) (Math.Cos(radU) * Math.Cos(radV));
+                    y = (float) (Math.Sin(radU) * Math.Cos(radV));
+                    z = (float) Math.Sin(radV);
+                    
+                    GL.Vertex3(x, y, z);
+                }
+            }*/
+
+            for (int v = -90; v <= 90; v += step)
+            {
+                for (int u = -180; u <= 180; u += step)
+                {
+                    GL.Vertex3(x, y, z);
+                    var radU = u * (Math.PI / 180);
+                    var radV = v * (Math.PI / 180);
+                    x = (float) (Math.Cos(radU) * Math.Cos(radV));
+                    y = (float) (Math.Sin(radU) * Math.Cos(radV));
+                    z = (float) Math.Sin(radV);
+                    
+                    GL.Vertex3(x, y, z);
+                }
+            }
+
+            GL.End();
         }
         
         public static void PaintSpiral()
         {
-
+            var x = 1f;
+            var y = 0f;
+            var z = 0f;
+            
+            GL.Begin(PrimitiveType.Lines);
+            GL.Color3(Color.IndianRed);
+            var isFirstPoint = true;
+            
+            for (int u = -360; u <= 360; u += 1)
+            {
+                for (int v = -180; v <= 180; v += 1)
+                {
+                    if (!isFirstPoint)
+                        GL.Vertex3(x, y, z);
+                    var radU = u * (Math.PI / 180);
+                    var radV = v * (Math.PI / 180);
+                    x = (float) (Math.Cos(radU) * (Math.Cos(radV) + 3));
+                    y = (float) (Math.Sin(radU) * (Math.Cos(radV) + 3));
+                    z = (float) (Math.Sin(radV) + radU);
+                    
+                    if (isFirstPoint)
+                        GL.Vertex3(x, y, z);
+                    GL.Vertex3(x, y, z);
+                    isFirstPoint = false;
+                }
+            }
+            
+            GL.End();
         }
         
+        public static void PaintLogarithmicSpiral()
+        {
+            var x = 1f;
+            var y = 0f;
+            var z = 0f;
+            
+            GL.Begin(PrimitiveType.Lines);
+            GL.Color3(Color.IndianRed);
+            var isFirstPoint = true;
+            
+            for (int u = 0; u <= 540; u += 3)
+            {
+                for (int v = -180; v <= 180; v += 3)
+                {
+                    if (!isFirstPoint)
+                        GL.Vertex3(x, y, z);
+                    var radU = u * (Math.PI / 180);
+                    var radV = v * (Math.PI / 180);
+                    x = (float) (radU * Math.Cos(radU) * (Math.Cos(radV) + 1));
+                    y = (float) (radU * Math.Sin(radU) * (Math.Cos(radV) + 1));
+                    z = (float) (radU * Math.Sin(radV));
+                    
+                    if (isFirstPoint)
+                        GL.Vertex3(x, y, z);
+                    GL.Vertex3(x, y, z);
+                    isFirstPoint = false;
+                }
+            }
+            
+            GL.End();
+        }
+
         public static void PaintTorus()
         {
-
+            var x = 1f;
+            var y = 0f;
+            var z = 0f;
+            
+            GL.Begin(PrimitiveType.Lines);
+            GL.Color3(Color.IndianRed);
+            var isFirstPoint = true;
+            
+            for (int u = -180; u <= 180; u += 1)
+            {
+                for (int v = -180; v <= 180; v += 1)
+                {
+                    if (!isFirstPoint)
+                        GL.Vertex3(x, y, z);
+                    var radU = u * (Math.PI / 180);
+                    var radV = v * (Math.PI / 180);
+                    x = (float) (Math.Cos(radU) * (Math.Cos(radV) + 3));
+                    y = (float) (Math.Sin(radU) * (Math.Cos(radV) + 3));
+                    z = (float) Math.Sin(radV);
+                    
+                    if (isFirstPoint)
+                        GL.Vertex3(x, y, z);
+                    GL.Vertex3(x, y, z);
+                    isFirstPoint = false;
+                }
+            }
+            
+            GL.End();
         }
     }
 }

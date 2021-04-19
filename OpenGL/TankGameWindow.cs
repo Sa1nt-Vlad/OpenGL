@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
@@ -40,9 +41,9 @@ namespace OpenGL
             GL.LoadIdentity();
             GL.Scale(perspective, perspective, perspective);
 
-            //TankPainter.DrawTank(2d);
+            TankPainter.DrawTank(2d);
 
-            Painter.PaintCylinder(new Vector3(0, 0, 0), 0.3f, 0.5f);
+            // Painter.PaintCylinder(Axis.X, new Vector3(0, 0, 0), 0.3f, 0.3f, 0.8f, Color.Aqua, Color.Azure);
             
             Context.SwapBuffers();
             base.OnRenderFrame(e);

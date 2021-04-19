@@ -33,13 +33,13 @@ namespace OpenGL
             /* 22 */ new Vector3(-0.3f, 0.12f, 0.97f),
                 
             /* 23 */ new Vector3(0.2f, 0.1f, -0.52f),
-            /* 24 */ new Vector3(0.2f, -0.08f, -0.74f),
-            /* 25 */ new Vector3(0.2f, -0.08f, 0.89f),
+            /* 24 */ new Vector3(0.2f, -0.125f, -0.74f),
+            /* 25 */ new Vector3(0.2f, -0.125f, 0.8f),
             /* 26 */ new Vector3(0.2f, 0.1f, 0.97f),
-            /* 27 */ new Vector3(-0.2f, -0.08f, -0.74f),
+            /* 27 */ new Vector3(-0.2f, -0.125f, -0.74f),
             /* 28 */ new Vector3(-0.2f, 0.1f, -0.52f),
             /* 29 */ new Vector3(-0.2f, 0.1f, 0.97f),
-            /* 30 */ new Vector3(-0.2f, -0.08f, 0.89f),
+            /* 30 */ new Vector3(-0.2f, -0.125f, 0.8f),
         };
         private static readonly Vector3[] towerPoints = {
             /* 0 */ Vector3.Zero,
@@ -89,11 +89,24 @@ namespace OpenGL
             /* 43 */ new Vector3(-0, 0.56f, 0.73f),
             /* 44 */ new Vector3(-0, 0.56f, 0.99f), 
         };
+        private static readonly Vector3[] rollerCenterPoints = {
+            /* 0 */ Vector3.Zero,
+            /* 1 */ new Vector3(0.07f, 0.12f, 0.24f), 
+            /* 2 */ new Vector3(0.15f, 0.12f, 0.29f), 
+            /* 3 */ new Vector3(0.07f, 0.29f, 0.26f),
+            /* 4 */ new Vector3(0.15f, 0.31f, 0.31f),
+            /* 5 */ new Vector3(0.182f, 0.37f, 0.4f),
+            /* 6 */ new Vector3(0.07f, 0.37f, 0.4f),
+            /* 7 */ new Vector3(0.07f, 0.45f, 0.54f),
+            /* 8 */ new Vector3(-0.3f, 0.1f, -0.78f)
+        };
         
         public static void DrawTank(double turretAngle)
         {
             DrawCorpus();
             DrawTower();
+            DrawGun();
+            DrawRollers();
         }
 
         private static void DrawTower()
@@ -133,7 +146,12 @@ namespace OpenGL
 
         private static void DrawGun()
         {
-            
+            var faceColor = Color.GreenYellow;
+            var sideColor = Color.YellowGreen;
+            Painter.PaintCylinder(Axis.Z, new Vector3(0, 0.42f, -0.1f), 0.018f, 0.028f, 1.7f, faceColor, sideColor);
+            Painter.PaintCylinder(Axis.Z, new Vector3(0, 0.42f, 0.38f), 0.03f, 0.031f, 0.7f, faceColor, sideColor);
+            Painter.PaintCylinder(Axis.Z, new Vector3(0, 0.42f, 0.53f), 0.038f, 0.7f, faceColor, sideColor);
+            Painter.PaintCylinder(Axis.Z, new Vector3(0, 0.483f, 0.55f), 0.028f, 0.45f, faceColor, sideColor);
         }
 
         private static void DrawTrack()
@@ -143,7 +161,17 @@ namespace OpenGL
 
         private static void DrawRollers()
         {
-            
+            var stepZ = 0f;
+            var stepX = 0f;
+            var faceColor = Color.Gray;
+            var sideColor = Color.DimGray;
+            for (int i = 0; i < 8; i++)
+            {
+                stepX = i % 2 == 0 ? 0 : 0.1f;
+                Painter.PaintCylinder(Axis.X, new Vector3(0.25f + stepX, -0.12f, -0.53f + stepZ), 0.12f, 0.09f, faceColor, sideColor);
+                Painter.PaintCylinder(Axis.X, new Vector3(-0.25f - stepX, -0.12f, -0.53f + stepZ), 0.12f, 0.09f, faceColor, sideColor);
+                stepZ += 0.16f;
+            }
         }
 
         private static void DrawCorpus()

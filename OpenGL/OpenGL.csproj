@@ -66,9 +66,11 @@
     <ItemGroup>
       <Content Include="Waffentrager\Description.txt" />
       <Content Include="Waffentrager\References\cebqkexro8m.jpg" />
+      <Content Include="Waffentrager\References\Corpus.png" />
       <Content Include="Waffentrager\References\G98_Waffentrager_E100.png" />
       <Content Include="Waffentrager\References\germany-g98_waffentrager_e100_p_3.jpg" />
       <Content Include="Waffentrager\References\obz3_16.jpg" />
+      <Content Include="Waffentrager\References\Tower.png" />
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
     <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

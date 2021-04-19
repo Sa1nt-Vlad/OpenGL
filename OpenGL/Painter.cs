@@ -100,6 +100,30 @@ namespace OpenGL
             }
             GL.End();
         }
+        
+        public static void PaintCircle(Vector3 center, float radius)
+        {
+            var angle = 1;
+            
+            var x = center.X - radius;
+            var y = center.Y;
+            var newX = x;
+            var newY = y;
+            
+            GL.Begin(PrimitiveType.Triangles);
+            for (int i = 0; i <= 360; i += angle)
+            {
+                GL.Vertex3(center);
+                GL.Vertex2(newX, newY);
+                
+                var radians = i * (Math.PI / 180);
+                newX = (float) ((x - center.X) * Math.Cos(radians) - (y - center.Y) * Math.Sin(radians) + center.X);
+                newY = (float) ((x - center.X) * Math.Sin(radians) + (y - center.Y) * Math.Cos(radians) + center.Y);
+                
+                GL.Vertex2(newX, newY);
+            }
+            GL.End();
+        }
 
         public static void PaintRegularPyramid(Vector3 center, float sideSize, int sideCount)
         {
@@ -327,6 +351,75 @@ namespace OpenGL
             }
             
             GL.End();
+        }
+        
+        public static void PaintCylinder(Vector3 center, float radius, float height)
+        {
+            var circleCenter1 = new Vector3(center.X, center.Y, center.Z - height / 2);
+            var circleCenter2 = new Vector3(center.X, center.Y, center.Z + height / 2);
+            
+            var x1 = circleCenter1.X - radius;
+            var y1 = circleCenter1.Y;
+            var newX1 = x1;
+            var newY1 = y1;
+            
+            var x2 = circleCenter2.X - radius;
+            var y2 = circleCenter2.Y;
+            var newX2 = x2;
+            var newY2 = y2;
+
+            var polygon = new Vector3[4];
+            
+            for (int i = 0; i <= 360; i += 16)
+            {
+                var radians1 = i * (Math.PI / 180);
+                var radians2 = (i + 8) * (Math.PI / 180);
+                // GL.Begin(PrimitiveType.Triangles);
+                GL.Vertex3(circleCenter1);
+                GL.Vertex3(newX1, newY1, circleCenter1.Z);
+                polygon[0] = new Vector3(newX1, newY1, circleCenter1.Z);
+                newX1 = (float) ((x1 - circleCenter1.X) * Math.Cos(radians1) - (y1 - circleCenter1.Y) * Math.Sin(radians1) + circleCenter1.X);
+                newY1 = (float) ((x1 - circleCenter1.X) * Math.Sin(radians1) + (y1 - circleCenter1.Y) * Math.Cos(radians1) + circleCenter1.Y);
+                GL.Vertex3(newX1, newY1, circleCenter1.Z);
+                
+                
+                
+                GL.Vertex3(circleCenter1);
+                GL.Vertex3(newX1, newY1, circleCenter1.Z);
+                polygon[1] = new Vector3(newX1, newY1, circleCenter1.Z);
+                newX1 = (float) ((x1 - circleCenter1.X) * Math.Cos(radians2) - (y1 - circleCenter1.Y) * Math.Sin(radians2) + circleCenter1.X);
+                newY1 = (float) ((x1 - circleCenter1.X) * Math.Sin(radians2) + (y1 - circleCenter1.Y) * Math.Cos(radians2) + circleCenter1.Y);
+                GL.Vertex3(newX1, newY1, circleCenter1.Z);
+                
+                
+                
+                GL.Vertex3(circleCenter2);
+                GL.Vertex3(newX2, newY2, circleCenter2.Z);
+                polygon[2] = new Vector3(newX2, newY2, circleCenter2.Z);
+
+                newX2 = (float) ((x2 - circleCenter2.X) * Math.Cos(radians2) - (y2 - circleCenter2.Y) * Math.Sin(radians2) + circleCenter2.X);
+                newY2 = (float) ((x2 - circleCenter2.X) * Math.Sin(radians2) + (y2 - circleCenter2.Y) * Math.Cos(radians2) + circleCenter2.Y);
+                GL.Vertex3(newX2, newY2, circleCenter2.Z);
+                
+                
+                GL.Vertex3(circleCenter2);
+                GL.Vertex3(newX2, newY2, circleCenter2.Z);
+                polygon[3] = new Vector3(newX2, newY2, circleCenter2.Z);
+
+                newX2 = (float) ((x2 - circleCenter2.X) * Math.Cos(radians2) - (y2 - circleCenter2.Y) * Math.Sin(radians2) + circleCenter2.X);
+                newY2 = (float) ((x2 - circleCenter2.X) * Math.Sin(radians2) + (y2 - circleCenter2.Y) * Math.Cos(radians2) + circleCenter2.Y);
+                GL.Vertex3(newX2, newY2, circleCenter2.Z);
+
+
+                // GL.End();
+                
+                GL.Begin(PrimitiveType.Quads);
+                GL.Vertex3(polygon[0]);
+                GL.Vertex3(polygon[1]);
+                GL.Vertex3(polygon[3]);
+                GL.Vertex3(polygon[2]);
+                GL.End();
+            }
         }
     }
 }

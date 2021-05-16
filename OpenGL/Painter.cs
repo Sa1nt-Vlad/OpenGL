@@ -52,9 +52,16 @@ namespace OpenGL
 
         public static void PaintSquare(Vector3 point1, Vector3 point2, Vector3 point3, Vector3 point4)
         {
+            GL.TexCoord2(0, 0);
             GL.Vertex3(point1);
+            
+            GL.TexCoord2(1, 0);
             GL.Vertex3(point2);
+            
+            GL.TexCoord2(1, 1);
             GL.Vertex3(point3);
+            
+            GL.TexCoord2(0, 1);
             GL.Vertex3(point4);
         }
 
@@ -524,24 +531,276 @@ namespace OpenGL
         {
             GL.Color3(color1);
             GL.Begin(PrimitiveType.Triangles);
+            GL.TexCoord2(v1.Y * 4 - 0.2, v1.Z * 4);
             GL.Vertex3(v1);
+            GL.TexCoord2(v2.Y * 4 - 0.2, v2.Z * 4);
             GL.Vertex3(v2);
+            GL.TexCoord2(v3.Y * 4 - 0.2, v3.Z * 4);
             GL.Vertex3(v3);
                 
+            GL.TexCoord2(v5.Y, v5.Z);
             GL.Vertex3(v5);
+            GL.TexCoord2(v4.Y, v4.Z);
             GL.Vertex3(v4);
+            GL.TexCoord2(v6.Y, v6.Z);
             GL.Vertex3(v6);
             GL.End();
                 
             GL.Color3(color2);
             GL.Begin(PrimitiveType.Quads);
+            
+            GL.TexCoord2(v1.Y, v1.Z);
             GL.Vertex3(v1);
+            GL.TexCoord2(v2.Y, v2.Z);
             GL.Vertex3(v2);
+            GL.TexCoord2(v5.Y, v5.Z);
             GL.Vertex3(v5);
+            GL.TexCoord2(v4.Y, v4.Z);
             GL.Vertex3(v4);
+
             GL.End();
         }
 
+        #endregion
+
+        #region ClampedCylinder
+        
+        public static void PaintClampedCylinder(Axis directAxis, Vector3 center, float outRadius, float inRadius, float height,
+            Color facesColor, Color sideColor)
+        {
+            switch (directAxis)
+            {
+                case Axis.X:
+                    PaintClampedCylinderYZ(center, outRadius, inRadius, height, facesColor, sideColor);
+                    break;
+                case Axis.Y:
+                    PaintClampedCylinderXZ(center, outRadius, inRadius, height, facesColor, sideColor);
+                    break;
+                case Axis.Z:
+                    PaintClampedCylinderXY(center, outRadius, inRadius, height, facesColor, sideColor);
+                    break;
+            }
+        }
+        
+         private static void PaintClampedCylinderXY(Vector3 center, float radius1, float radius2, float height,
+            Color facesColor, Color sideColor)
+        {
+            var circleCenter1 = new Vector3(center.X, center.Y, center.Z - height / 2);
+            var circleCenter2 = new Vector3(center.X, center.Y, center.Z + height / 2);
+
+            var x1 = circleCenter1.X - radius1;
+            var y1 = circleCenter1.Y;
+            var newX1 = x1;
+            var newY1 = y1;
+            var x11 = circleCenter1.X - radius2;
+            var y11 = circleCenter1.Y;
+            var newX11 = x11;
+            var newY11 = y11;
+            
+            var x2 = circleCenter2.X - radius1;
+            var y2 = circleCenter2.Y;
+            var newX2 = x2;
+            var newY2 = y2;
+            var x22 = circleCenter2.X - radius2;
+            var y22 = circleCenter2.Y;
+            var newX22 = x22;
+            var newY22 = y22;
+            
+            var vertices1 = new Vector3[360];
+            var vertices11 = new Vector3[360];
+            var vertices2 = new Vector3[360];
+            var vertices22 = new Vector3[360];
+            
+            for (int i = 0; i < 360; i++)
+            {
+                vertices1[i] = new Vector3(newX1, newY1, circleCenter1.Z);
+                vertices2[i] = new Vector3(newX2, newY2, circleCenter2.Z);
+                vertices11[i] = new Vector3(newX11, newY11, circleCenter1.Z);
+                vertices22[i] = new Vector3(newX22, newY22, circleCenter2.Z);
+                
+                var radians = i * (Math.PI / 180);
+                
+                newX1 = (float) ((x1 - circleCenter1.X) * Math.Cos(radians) - (y1 - circleCenter1.Y) * Math.Sin(radians) + circleCenter1.X);
+                newY1 = (float) ((x1 - circleCenter1.X) * Math.Sin(radians) + (y1 - circleCenter1.Y) * Math.Cos(radians) + circleCenter1.Y);
+                newX11 = (float) ((x11 - circleCenter1.X) * Math.Cos(radians) - (y11 - circleCenter1.Y) * Math.Sin(radians) + circleCenter1.X);
+                newY11 = (float) ((x11 - circleCenter1.X) * Math.Sin(radians) + (y11 - circleCenter1.Y) * Math.Cos(radians) + circleCenter1.Y);
+                
+                newX2 = (float) ((x2 - circleCenter2.X) * Math.Cos(radians) - (y2 - circleCenter2.Y) * Math.Sin(radians) + circleCenter2.X);
+                newY2 = (float) ((x2 - circleCenter2.X) * Math.Sin(radians) + (y2 - circleCenter2.Y) * Math.Cos(radians) + circleCenter2.Y);
+                newX22 = (float) ((x22 - circleCenter2.X) * Math.Cos(radians) - (y22 - circleCenter2.Y) * Math.Sin(radians) + circleCenter2.X);
+                newY22 = (float) ((x22 - circleCenter2.X) * Math.Sin(radians) + (y22 - circleCenter2.Y) * Math.Cos(radians) + circleCenter2.Y);
+            }
+
+            
+            for (int i = 1; i < vertices1.Length; i++)
+            {
+                DrawClampedCylinderPart(vertices11[i], vertices11[i - 1], vertices1[i - 1], vertices1[i], 
+                    vertices2[i], vertices2[i - 1], vertices22[i - 1], vertices22[i], 
+                    facesColor, sideColor);
+
+                if (i == vertices1.Length - 1)
+                    DrawClampedCylinderPart(vertices11[i], vertices11[0], vertices1[0], vertices1[i], 
+                        vertices2[i], vertices2[0], vertices22[0], vertices22[i], 
+                        facesColor, sideColor);
+            }
+        }
+
+         private static void PaintClampedCylinderXZ(Vector3 center, float radius1, float radius2, float height,
+            Color facesColor, Color sideColor)
+        {
+            var circleCenter1 = new Vector3(center.X, center.Y - height / 2, center.Z);
+            var circleCenter2 = new Vector3(center.X, center.Y + height / 2, center.Z);
+
+            var x1 = circleCenter1.X - radius1;
+            var y1 = circleCenter1.Z;
+            var newX1 = x1;
+            var newY1 = y1;
+            var x11 = circleCenter1.X - radius2;
+            var y11 = circleCenter1.Z;
+            var newX11 = x11;
+            var newY11 = y11;
+            
+            var x2 = circleCenter2.X - radius1;
+            var y2 = circleCenter2.Z;
+            var newX2 = x2;
+            var newY2 = y2;
+            var x22 = circleCenter2.X - radius2;
+            var y22 = circleCenter2.Z;
+            var newX22 = x22;
+            var newY22 = y22;
+            
+            var vertices1 = new Vector3[360];
+            var vertices11 = new Vector3[360];
+            var vertices2 = new Vector3[360];
+            var vertices22 = new Vector3[360];
+            
+            for (int i = 0; i < 360; i++)
+            {
+                vertices1[i] = new Vector3(newX1, circleCenter1.Y, newY1);
+                vertices2[i] = new Vector3(newX2, circleCenter2.Y, newY2);
+                vertices11[i] = new Vector3(newX11, circleCenter1.Y, newY11);
+                vertices22[i] = new Vector3(newX22, circleCenter2.Y, newY22);
+                
+                var radians = i * (Math.PI / 180);
+                
+                newX1 = (float) ((x1 - circleCenter1.X) * Math.Cos(radians) - (y1 - circleCenter1.Z) * Math.Sin(radians) + circleCenter1.X);
+                newY1 = (float) ((x1 - circleCenter1.X) * Math.Sin(radians) + (y1 - circleCenter1.Z) * Math.Cos(radians) + circleCenter1.Z);
+                newX11 = (float) ((x11 - circleCenter1.X) * Math.Cos(radians) - (y11 - circleCenter1.Z) * Math.Sin(radians) + circleCenter1.X);
+                newY11 = (float) ((x11 - circleCenter1.X) * Math.Sin(radians) + (y11 - circleCenter1.Z) * Math.Cos(radians) + circleCenter1.Z);
+                
+                newX2 = (float) ((x2 - circleCenter2.X) * Math.Cos(radians) - (y2 - circleCenter2.Z) * Math.Sin(radians) + circleCenter2.X);
+                newY2 = (float) ((x2 - circleCenter2.X) * Math.Sin(radians) + (y2 - circleCenter2.Z) * Math.Cos(radians) + circleCenter2.Z);
+                newX22 = (float) ((x22 - circleCenter2.X) * Math.Cos(radians) - (y22 - circleCenter2.Z) * Math.Sin(radians) + circleCenter2.X);
+                newY22 = (float) ((x22 - circleCenter2.X) * Math.Sin(radians) + (y22 - circleCenter2.Z) * Math.Cos(radians) + circleCenter2.Z);
+            }
+
+            
+            for (int i = 1; i < vertices1.Length; i++)
+            {
+                DrawClampedCylinderPart(vertices11[i], vertices11[i - 1], vertices1[i - 1], vertices1[i], 
+                    vertices2[i], vertices2[i - 1], vertices22[i - 1], vertices22[i], 
+                    facesColor, sideColor);
+
+                if (i == vertices1.Length - 1)
+                    DrawClampedCylinderPart(vertices11[i], vertices11[0], vertices1[0], vertices1[i], 
+                        vertices2[i], vertices2[0], vertices22[0], vertices22[i], 
+                        facesColor, sideColor);
+            }
+        }
+
+        private static void PaintClampedCylinderYZ(Vector3 center, float radius1, float radius2, float height,
+            Color facesColor, Color sideColor)
+        {
+            var circleCenter1 = new Vector3(center.X - height / 2, center.Y, center.Z);
+            var circleCenter2 = new Vector3(center.X + height / 2, center.Y, center.Z);
+
+            var x1 = circleCenter1.Y - radius1;
+            var y1 = circleCenter1.Z;
+            var newX1 = x1;
+            var newY1 = y1;
+            var x11 = circleCenter1.Y - radius2;
+            var y11 = circleCenter1.Z;
+            var newX11 = x11;
+            var newY11 = y11;
+            
+            var x2 = circleCenter2.Y - radius1;
+            var y2 = circleCenter2.Z;
+            var newX2 = x2;
+            var newY2 = y2;
+            var x22 = circleCenter2.Y - radius2;
+            var y22 = circleCenter2.Z;
+            var newX22 = x22;
+            var newY22 = y22;
+            
+            var vertices1 = new Vector3[360];
+            var vertices11 = new Vector3[360];
+            var vertices2 = new Vector3[360];
+            var vertices22 = new Vector3[360];
+            
+            for (int i = 0; i < 360; i++)
+            {
+                vertices1[i] = new Vector3(circleCenter1.X, newX1, newY1);
+                vertices2[i] = new Vector3(circleCenter2.X, newX2, newY2);
+                vertices11[i] = new Vector3(circleCenter1.X, newX11, newY11);
+                vertices22[i] = new Vector3(circleCenter2.X, newX22, newY22);
+                
+                var radians = i * (Math.PI / 180);
+                
+                newX1 = (float) ((x1 - circleCenter1.Y) * Math.Cos(radians) - (y1 - circleCenter1.Z) * Math.Sin(radians) + circleCenter1.Y);
+                newY1 = (float) ((x1 - circleCenter1.Y) * Math.Sin(radians) + (y1 - circleCenter1.Z) * Math.Cos(radians) + circleCenter1.Z);
+                newX11 = (float) ((x11 - circleCenter1.Y) * Math.Cos(radians) - (y11 - circleCenter1.Z) * Math.Sin(radians) + circleCenter1.Y);
+                newY11 = (float) ((x11 - circleCenter1.Y) * Math.Sin(radians) + (y11 - circleCenter1.Z) * Math.Cos(radians) + circleCenter1.Z);
+                
+                newX2 = (float) ((x2 - circleCenter2.Y) * Math.Cos(radians) - (y2 - circleCenter2.Z) * Math.Sin(radians) + circleCenter2.Y);
+                newY2 = (float) ((x2 - circleCenter2.Y) * Math.Sin(radians) + (y2 - circleCenter2.Z) * Math.Cos(radians) + circleCenter2.Z);
+                newX22 = (float) ((x22 - circleCenter2.Y) * Math.Cos(radians) - (y22 - circleCenter2.Z) * Math.Sin(radians) + circleCenter2.Y);
+                newY22 = (float) ((x22 - circleCenter2.Y) * Math.Sin(radians) + (y22 - circleCenter2.Z) * Math.Cos(radians) + circleCenter2.Z);
+            }
+
+            
+            for (int i = 1; i < vertices1.Length; i++)
+            {
+                DrawClampedCylinderPart(vertices11[i], vertices11[i - 1], vertices1[i - 1], vertices1[i], 
+                    vertices2[i], vertices2[i - 1], vertices22[i - 1], vertices22[i], 
+                    facesColor, sideColor);
+
+                if (i == vertices1.Length - 1)
+                    DrawClampedCylinderPart(vertices11[i], vertices11[0], vertices1[0], vertices1[i], 
+                        vertices2[i], vertices2[0], vertices22[0], vertices22[i], 
+                        facesColor, sideColor);
+            }
+        }
+        
+        private static void DrawClampedCylinderPart(Vector3 v1, Vector3 v2, Vector3 v3, Vector3 v4, Vector3 v5, 
+            Vector3 v6, Vector3 v7, Vector3 v8, Color facesColor, Color sideColor)
+        {
+            GL.Begin(PrimitiveType.Quads);
+            GL.Color3(facesColor);
+            GL.Vertex3(v1);
+            GL.Vertex3(v2);
+            GL.Vertex3(v3);
+            GL.Vertex3(v4);
+                
+            GL.Vertex3(v5);
+            GL.Vertex3(v6);
+            GL.Vertex3(v7);
+            GL.Vertex3(v8);
+             
+            GL.Color3(sideColor);
+
+            GL.Vertex3(v3);
+            GL.Vertex3(v4);
+            GL.Vertex3(v5);
+            GL.Vertex3(v6);
+
+            GL.Vertex3(v1);
+            GL.Vertex3(v2);
+            GL.Vertex3(v7);
+            GL.Vertex3(v8);
+             
+            GL.End();
+        }
+        
         #endregion
     }
 }

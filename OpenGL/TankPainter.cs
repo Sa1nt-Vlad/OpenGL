@@ -130,37 +130,40 @@ namespace OpenGL
             DrawGun();
             DrawRollers();
             DrawTrack();
+            DrawDetails();
+        }
+
+        private static void DrawDetails()
+        {
+            // две решетки спереди
+            
+            
+            // держатель орудия
+            
+            
         }
 
         private static void DrawTower()
         {
             GL.Begin(PrimitiveType.Quads);
-            GL.Color3(Color.DimGray);
             MakeSquare(towerPoints[1], towerPoints[2], towerPoints[4], towerPoints[3]);
             MakeSquare(towerPoints[14], towerPoints[15], towerPoints[16], towerPoints[17]);
             MakeSquare(towerPoints[23], towerPoints[24], towerPoints[26], towerPoints[25]);
             MakeSquare(towerPoints[36], towerPoints[37], towerPoints[38], towerPoints[39]);
-            
-            GL.Color3(Color.SlateGray);
+            MakeSquare(towerPoints[1], towerPoints[3], towerPoints[25], towerPoints[23]);
             MakeSquare(towerPoints[2], towerPoints[4], towerPoints[5], towerPoints[11]);
             MakeSquare(towerPoints[5], towerPoints[11], towerPoints[12], towerPoints[13]);
             MakeSquare(towerPoints[12], towerPoints[13], towerPoints[14], towerPoints[15]);
             MakeSquare(towerPoints[24], towerPoints[26], towerPoints[27], towerPoints[33]);
             MakeSquare(towerPoints[27], towerPoints[33], towerPoints[34], towerPoints[35]);
             MakeSquare(towerPoints[34], towerPoints[35], towerPoints[36], towerPoints[37]);
-            
-            GL.Color3(Color.IndianRed);
             MakeSquare(towerPoints[3], towerPoints[4], towerPoints[5], towerPoints[6]);
             MakeSquare(towerPoints[13], towerPoints[14], towerPoints[17], towerPoints[18]);
             MakeSquare(towerPoints[25], towerPoints[26], towerPoints[27], towerPoints[28]);
             MakeSquare(towerPoints[35], towerPoints[36], towerPoints[39], towerPoints[40]);
-
-            GL.Color3(Color.CornflowerBlue);
+            MakeSquare(towerPoints[11], towerPoints[12], towerPoints[34], towerPoints[33]);
             MakeSquare(towerPoints[28], towerPoints[27], towerPoints[31], towerPoints[29]);
-            GL.Color3(Color.CornflowerBlue);
             MakeSquare(towerPoints[6], towerPoints[5], towerPoints[9], towerPoints[7]);
-            
-            GL.Color3(Color.Gray);
             MakeSquare(towerPoints[21], towerPoints[22], towerPoints[18], towerPoints[13]);
             MakeSquare(towerPoints[43], towerPoints[44], towerPoints[40], towerPoints[35]);
             
@@ -169,19 +172,26 @@ namespace OpenGL
 
         private static void DrawGun()
         {
-            var faceColor = Color.GreenYellow;
-            var sideColor = Color.YellowGreen;
+            GL.Disable(EnableCap.Lighting);
+            GL.Disable(EnableCap.Texture2D);
+
+            var sideColor = Color.FromArgb(72, 72, 72);
+            var faceColor = Color.FromArgb(39, 39, 39);
+            
             Painter.PaintCylinder(Axis.Z, new Vector3(0, 0.42f, -0.1f), 0.018f, 0.028f, 1.7f, faceColor, sideColor);
-            Painter.PaintCylinder(Axis.Z, new Vector3(0, 0.42f, 0.38f), 0.03f, 0.031f, 0.7f, faceColor, sideColor);
             Painter.PaintCylinder(Axis.Z, new Vector3(0, 0.42f, 0.53f), 0.038f, 0.7f, faceColor, sideColor);
+            Painter.PaintCylinder(Axis.Z, new Vector3(0, 0.42f, 0.38f), 0.03f, 0.031f, 0.7f, faceColor, sideColor);
             Painter.PaintCylinder(Axis.Z, new Vector3(0, 0.483f, 0.55f), 0.028f, 0.45f, faceColor, sideColor);
             Painter.PaintCylinder(Axis.Z, new Vector3(0, 0.36f, 0.455f), 0.023f, 0.45f, faceColor, sideColor);
+            
+            GL.Enable(EnableCap.Lighting);
+            GL.Enable(EnableCap.Texture2D);
         }
 
         private static void DrawTrack()
         {
+            GL.BindTexture(TextureTarget.Texture2D, TankGameWindow.TextureIds[2]);
             GL.Begin(PrimitiveType.Quads);
-            GL.Color3(Color.DarkKhaki);
             MakeSquare(trackPoints[1], trackPoints[2], trackPoints[4], trackPoints[3]);
             MakeSquare(trackPoints[1], trackPoints[2], trackPoints[4], trackPoints[3], true);
             MakeSquare(trackPoints[8], trackPoints[9], trackPoints[10], trackPoints[11]);
@@ -192,8 +202,6 @@ namespace OpenGL
             MakeSquare(trackPoints[20], trackPoints[21], trackPoints[22], trackPoints[23], true);
             MakeSquare(trackPoints[25], trackPoints[26], trackPoints[29], trackPoints[28]);
             MakeSquare(trackPoints[25], trackPoints[26], trackPoints[29], trackPoints[28], true);
-            
-            GL.Color3(Color.DarkCyan);
             MakeSquare(trackPoints[2], trackPoints[6], trackPoints[5], trackPoints[4]);
             MakeSquare(trackPoints[2], trackPoints[6], trackPoints[5], trackPoints[4], true);
             MakeSquare(trackPoints[7], trackPoints[8], trackPoints[11], trackPoints[12]);
@@ -204,8 +212,6 @@ namespace OpenGL
             MakeSquare(trackPoints[19], trackPoints[20], trackPoints[23], trackPoints[24], true);
             MakeSquare(trackPoints[26], trackPoints[27], trackPoints[30], trackPoints[29]);
             MakeSquare(trackPoints[26], trackPoints[27], trackPoints[30], trackPoints[29], true);
-
-            GL.Color3(Color.DarkSalmon);
             MakeSquare(trackPoints[1], trackPoints[2], trackPoints[8], trackPoints[9]);
             MakeSquare(trackPoints[1], trackPoints[2], trackPoints[8], trackPoints[9], true);
             MakeSquare(trackPoints[10], trackPoints[11], trackPoints[14], trackPoints[15]);
@@ -216,8 +222,6 @@ namespace OpenGL
             MakeSquare(trackPoints[22], trackPoints[23], trackPoints[26], trackPoints[27], true);
             MakeSquare(trackPoints[29], trackPoints[30], trackPoints[3], trackPoints[4]);
             MakeSquare(trackPoints[29], trackPoints[30], trackPoints[3], trackPoints[4], true);
-
-            GL.Color3(Color.MediumSlateBlue);
             MakeSquare(trackPoints[2], trackPoints[6], trackPoints[7], trackPoints[8]);
             MakeSquare(trackPoints[2], trackPoints[6], trackPoints[7], trackPoints[8], true);
             MakeSquare(trackPoints[11], trackPoints[12], trackPoints[13], trackPoints[14]);
@@ -234,72 +238,68 @@ namespace OpenGL
 
         private static void DrawRollers()
         {
+            GL.Disable(EnableCap.Lighting);
+            GL.Disable(EnableCap.Texture2D);
             var stepZ = 0f;
             var stepX = 0f;
-            var faceColor = Color.Gray;
-            var sideColor = Color.DimGray;
+            var color1 = Color.FromArgb(72, 72, 72);
+            var sideColor = Color.FromArgb(39, 39, 39);
+            
+            
             for (int i = 0; i < 8; i++)
             {
                 stepX = i % 2 == 0 ? 0 : 0.095f;
-                Painter.PaintCylinder(Axis.X, new Vector3(0.25f + stepX, -0.1f, -0.53f + stepZ), 0.12f, 0.08f, faceColor, sideColor);
-                Painter.PaintCylinder(Axis.X, new Vector3(-0.25f - stepX, -0.1f, -0.53f + stepZ), 0.12f, 0.08f, faceColor, sideColor);
+                Painter.PaintCylinder(Axis.X, new Vector3(0.25f + stepX, -0.1f, -0.53f + stepZ), 0.09f, 0.03f, sideColor, sideColor);
+                Painter.PaintCylinder(Axis.X, new Vector3(0.25f + stepX, -0.1f, -0.53f + stepZ), 0.02f, 0.05f, color1, sideColor);
+                Painter.PaintClampedCylinder(Axis.X, new Vector3(0.25f + stepX, -0.1f, -0.53f + stepZ), 0.12f, 0.09f, 0.08f, color1, sideColor);
+                Painter.PaintCylinder(Axis.X, new Vector3(-0.25f - stepX, -0.1f, -0.53f + stepZ), 0.09f, 0.03f, sideColor, sideColor);
+                Painter.PaintCylinder(Axis.X, new Vector3(-0.25f - stepX, -0.1f, -0.53f + stepZ), 0.02f, 0.05f, color1, sideColor);
+                Painter.PaintClampedCylinder(Axis.X, new Vector3(-0.25f - stepX, -0.1f, -0.53f + stepZ), 0.12f, 0.09f, 0.08f, color1, sideColor);
                 stepZ += 0.16f;
             }
             
             // передние катки
-            Painter.PaintCylinder(Axis.X, new Vector3(-0.32f, -0.04f, -0.77f), 0.11f, 0.11f, faceColor, sideColor);
-            Painter.PaintCylinder(Axis.X, new Vector3(0.32f, -0.04f, -0.77f), 0.11f, 0.11f, faceColor, sideColor);
-            Painter.PaintCylinder(Axis.X, new Vector3(-0.2f, -0.04f, -0.77f), 0.02f, 0.2f, faceColor, sideColor);
-            Painter.PaintCylinder(Axis.X, new Vector3(0.2f, -0.04f, -0.77f), 0.02f, 0.2f, faceColor, sideColor);
+            Painter.PaintCylinder(Axis.X, new Vector3(-0.32f, -0.04f, -0.77f), 0.11f, 0.11f, color1, sideColor);
+            Painter.PaintCylinder(Axis.X, new Vector3(0.32f, -0.04f, -0.77f), 0.11f, 0.11f, color1, sideColor);
+            Painter.PaintCylinder(Axis.X, new Vector3(-0.2f, -0.04f, -0.77f), 0.02f, 0.2f, color1, sideColor);
+            Painter.PaintCylinder(Axis.X, new Vector3(0.2f, -0.04f, -0.77f), 0.02f, 0.2f, color1, sideColor);
             
             // задние катки
-            Painter.PaintCylinder(Axis.X, new Vector3(-0.32f, -0.042f, 0.8f), 0.085f, 0.12f, faceColor, sideColor);
-            Painter.PaintCylinder(Axis.X, new Vector3(0.32f, -0.042f, 0.8f), 0.085f, 0.12f, faceColor, sideColor);
-            Painter.PaintCylinder(Axis.X, new Vector3(-0.2f, -0.042f, 0.8f), 0.02f, 0.2f, faceColor, sideColor);
-            Painter.PaintCylinder(Axis.X, new Vector3(0.2f, -0.042f, 0.8f), 0.02f, 0.2f, faceColor, sideColor);
+            Painter.PaintCylinder(Axis.X, new Vector3(-0.32f, -0.042f, 0.8f), 0.085f, 0.12f, color1, sideColor);
+            Painter.PaintCylinder(Axis.X, new Vector3(0.32f, -0.042f, 0.8f), 0.085f, 0.12f, color1, sideColor);
+            Painter.PaintCylinder(Axis.X, new Vector3(-0.2f, -0.042f, 0.8f), 0.02f, 0.2f, color1, sideColor);
+            Painter.PaintCylinder(Axis.X, new Vector3(0.2f, -0.042f, 0.8f), 0.02f, 0.2f, color1, sideColor);
+            GL.Enable(EnableCap.Lighting);
+            GL.Enable(EnableCap.Texture2D);
         }
 
         private static void DrawCorpus()
         {
+            GL.BindTexture(TextureTarget.Texture2D, TankGameWindow.TextureIds[7]);
             GL.Begin(PrimitiveType.Quads);
-            GL.Color3(Color.DimGray);
             MakeSquare(corpusPoints[1], corpusPoints[2], corpusPoints[3], corpusPoints[4]);
             MakeSquare(corpusPoints[5], corpusPoints[6], corpusPoints[7], corpusPoints[8]);
-            GL.Color3(Color.Gray);
             MakeSquare(corpusPoints[6], corpusPoints[10], corpusPoints[9], corpusPoints[7]);
-            GL.Color3(Color.DimGray);
             MakeSquare(corpusPoints[9], corpusPoints[10], corpusPoints[13], corpusPoints[16]);
-            GL.Color3(Color.SlateGray);
             MakeSquare(corpusPoints[5], corpusPoints[6], corpusPoints[10], corpusPoints[11]);
             MakeSquare(corpusPoints[8], corpusPoints[7], corpusPoints[9], corpusPoints[14]);
-            GL.Color3(Color.Gray);
             MakeSquare(corpusPoints[10], corpusPoints[13], corpusPoints[17], corpusPoints[11]);
             MakeSquare(corpusPoints[9], corpusPoints[14], corpusPoints[20], corpusPoints[16]);
-            GL.Color3(Color.SlateGray);
             MakeSquare(corpusPoints[20], corpusPoints[16], corpusPoints[13], corpusPoints[17]);
-            GL.Color3(Color.DimGray);
             MakeSquare(corpusPoints[12], corpusPoints[17], corpusPoints[18], corpusPoints[19]);
             MakeSquare(corpusPoints[15], corpusPoints[20], corpusPoints[21], corpusPoints[22]);
             MakeSquare(corpusPoints[21], corpusPoints[22], corpusPoints[19], corpusPoints[18]);
-            GL.Color3(Color.Gray);
             MakeSquare(corpusPoints[15], corpusPoints[22], corpusPoints[19], corpusPoints[12]);
-
-            GL.Color3(Color.LightSlateGray);
             MakeSquare(corpusPoints[1], corpusPoints[2], corpusPoints[23], corpusPoints[24]);
             MakeSquare(corpusPoints[3], corpusPoints[4], corpusPoints[27], corpusPoints[28]);
-            
-            GL.Color3(Color.SlateGray);
             MakeSquare(corpusPoints[24], corpusPoints[23], corpusPoints[26], corpusPoints[25]);
             MakeSquare(corpusPoints[27], corpusPoints[28], corpusPoints[29], corpusPoints[30]);
-            GL.Color3(Color.Gray);
             MakeSquare(corpusPoints[4], corpusPoints[1], corpusPoints[24], corpusPoints[27]);
             MakeSquare(corpusPoints[17], corpusPoints[18], corpusPoints[21], corpusPoints[20]);
             MakeSquare(corpusPoints[2], corpusPoints[5], corpusPoints[11], corpusPoints[23]);
             MakeSquare(corpusPoints[3], corpusPoints[8], corpusPoints[14], corpusPoints[28]);
-            GL.Color3(Color.DimGray);
             MakeSquare(corpusPoints[24], corpusPoints[27], corpusPoints[30], corpusPoints[25]);
             MakeSquare(corpusPoints[11], corpusPoints[14], corpusPoints[20], corpusPoints[17]);
-            GL.Color3(Color.LightSlateGray);
             MakeSquare(corpusPoints[25], corpusPoints[30], corpusPoints[29], corpusPoints[26]);
 
             GL.End();

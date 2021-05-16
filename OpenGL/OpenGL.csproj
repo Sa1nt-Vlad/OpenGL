@@ -65,6 +65,17 @@
       <None Include="packages.config" />
     </ItemGroup>
     <ItemGroup>
+      <Content Include="Textures\back.bmp" />
+      <Content Include="Textures\body.bmp" />
+      <Content Include="Textures\body_1.bmp" />
+      <Content Include="Textures\metal.bmp" />
+      <Content Include="Textures\metal_2.bmp" />
+      <Content Include="Textures\metal_3.bmp" />
+      <Content Include="Textures\track.bmp" />
+      <Content Include="Textures\track_1.bmp" />
+      <Content Include="Textures\turret.bmp" />
+      <Content Include="Textures\wheel.bmp" />
+      <Content Include="Textures\wheel_1.bmp" />
       <Content Include="Waffentrager\Description.txt" />
       <Content Include="Waffentrager\References\cebqkexro8m.jpg" />
       <Content Include="Waffentrager\References\Corpus.png" />

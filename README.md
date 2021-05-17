@@ -1,4 +1,4 @@
-# OpenGL_RT
+# OpenGL
 
 OpenGL project using the OpenTK library
 

@@ -531,31 +531,31 @@ namespace OpenGL
         {
             GL.Color3(color1);
             GL.Begin(PrimitiveType.Triangles);
-            GL.TexCoord2(v1.Y * 4 - 0.2, v1.Z * 4);
+            GL.TexCoord2(v1.X * 5, v1.Z * 5);
             GL.Vertex3(v1);
-            GL.TexCoord2(v2.Y * 4 - 0.2, v2.Z * 4);
+            GL.TexCoord2(v2.X * 5, v2.Z * 5);
             GL.Vertex3(v2);
-            GL.TexCoord2(v3.Y * 4 - 0.2, v3.Z * 4);
+            GL.TexCoord2(v3.X * 5, v3.Z * 5);
             GL.Vertex3(v3);
                 
-            GL.TexCoord2(v5.Y, v5.Z);
+            GL.TexCoord2(v5.X * 4f - 0.5f, v5.Z * 4f + 0.1f);
             GL.Vertex3(v5);
-            GL.TexCoord2(v4.Y, v4.Z);
+            GL.TexCoord2(v4.X * 4f - 0.5f, v4.Z * 4f + 0.1f);
             GL.Vertex3(v4);
-            GL.TexCoord2(v6.Y, v6.Z);
+            GL.TexCoord2(v6.X * 4f - 0.5f, v6.Z * 4f + 0.1f);
             GL.Vertex3(v6);
             GL.End();
                 
             GL.Color3(color2);
             GL.Begin(PrimitiveType.Quads);
             
-            GL.TexCoord2(v1.Y, v1.Z);
+            GL.TexCoord2(v1.X, v1.Z);
             GL.Vertex3(v1);
-            GL.TexCoord2(v2.Y, v2.Z);
+            GL.TexCoord2(v2.X, v2.Z);
             GL.Vertex3(v2);
-            GL.TexCoord2(v5.Y, v5.Z);
+            GL.TexCoord2(v5.X, v5.Z);
             GL.Vertex3(v5);
-            GL.TexCoord2(v4.Y, v4.Z);
+            GL.TexCoord2(v4.X, v4.Z);
             GL.Vertex3(v4);
 
             GL.End();

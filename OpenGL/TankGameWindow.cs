@@ -11,12 +11,12 @@ namespace OpenGL
 {
     class TankGameWindow : GameWindow
     {
-        private double turretRotationAngle;
-        private double perspective = 1.0;
-        private float angleX = 0;
-        private float angleY = 0;
-        private float lastMouseX = 0;
-        private float lastMouseY = 0;
+        private double _turretRotationAngle;
+        private double _perspective = 1.0;
+        private float _angleX = 0;
+        private float _angleY = 0;
+        private float _lastMouseX = 0;
+        private float _lastMouseY = 0;
         
         public static int[] TextureIds;
         
@@ -45,20 +45,18 @@ namespace OpenGL
             GL.Light(LightName.Light2, LightParameter.Position, new[] { 0.0f, 1.0f, 0.0f });
             GL.Enable(EnableCap.Light2);
             
-            
+            GL.Enable(EnableCap.AutoNormal);
             GL.Enable(EnableCap.Texture2D);
             TextureIds = new int[9];
 
-            GL.Enable(EnableCap.AutoNormal);
-            
             GL.GenTextures(TextureIds.Length, TextureIds);
             GenerateNewTexture(0, @"..\..\Textures\body_1.bmp");
             GenerateNewTexture(1, @"..\..\Textures\wheel_1.bmp");
             GenerateNewTexture(2, @"..\..\Textures\track_2.bmp");
-            GenerateNewTexture(3, @"..\..\Textures\body_1.bmp");
+            GenerateNewTexture(3, @"..\..\Textures\grille_2.bmp");
             GenerateNewTexture(4, @"..\..\Textures\body_1.bmp");
-            GenerateNewTexture(5, @"..\..\Textures\metal_3.bmp");
-            GenerateNewTexture(6, @"..\..\Textures\metal.bmp");
+            GenerateNewTexture(5, @"..\..\Textures\grille_2.bmp");
+            GenerateNewTexture(6, @"..\..\Textures\grille_2.bmp");
             GenerateNewTexture(7, @"..\..\Textures\camo_1.bmp");
             
             base.OnLoad(e);
@@ -70,7 +68,7 @@ namespace OpenGL
 
             GL.MatrixMode(MatrixMode.Projection);
             GL.LoadIdentity();
-            GL.Scale(perspective, perspective, perspective);
+            GL.Scale(_perspective, _perspective, _perspective);
 
             TankPainter.DrawTank(2d);
             
@@ -105,8 +103,8 @@ namespace OpenGL
 
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
-            GL.Rotate(angleX, 1, 0, 0);
-            GL.Rotate(angleY, 0, 1, 0);
+            GL.Rotate(_angleX, 1, 0, 0);
+            GL.Rotate(_angleY, 0, 1, 0);
         }
 
         private void ProcessKeyboardState()
@@ -117,22 +115,22 @@ namespace OpenGL
 
             if (keyboardState.IsKeyDown(Key.D))
             {
-                if (Math.Abs(turretRotationAngle - 360.0) < 0.001)
-                    turretRotationAngle = 0.0;
+                if (Math.Abs(_turretRotationAngle - 360.0) < 0.001)
+                    _turretRotationAngle = 0.0;
                 else
-                    turretRotationAngle += 5.0;
+                    _turretRotationAngle += 5.0;
             }
 
             if (keyboardState.IsKeyDown(Key.A))
             {
-                if (Math.Abs(turretRotationAngle - (-360.0)) < 0.001)
-                    turretRotationAngle = 0.0;
+                if (Math.Abs(_turretRotationAngle - (-360.0)) < 0.001)
+                    _turretRotationAngle = 0.0;
                 else
-                    turretRotationAngle -= 5.0;
+                    _turretRotationAngle -= 5.0;
             }
 
-            if (keyboardState.IsKeyDown(Key.W)) perspective += 0.01;
-            if (keyboardState.IsKeyDown(Key.S)) perspective -= 0.01;
+            if (keyboardState.IsKeyDown(Key.W)) _perspective += 0.01;
+            if (keyboardState.IsKeyDown(Key.S)) _perspective -= 0.01;
         }
 
         private void ProcessMouseState()
@@ -141,16 +139,16 @@ namespace OpenGL
 
             if (state.LeftButton == ButtonState.Pressed)
             {
-                if (Math.Abs(state.X - lastMouseX) >= 20)
-                    lastMouseX = state.X;
-                if (Math.Abs(state.Y - lastMouseY) >= 20)
-                    lastMouseY = state.Y;
+                if (Math.Abs(state.X - _lastMouseX) >= 20)
+                    _lastMouseX = state.X;
+                if (Math.Abs(state.Y - _lastMouseY) >= 20)
+                    _lastMouseY = state.Y;
                 
-                angleX += (lastMouseY - state.Y) / 2;
-                angleY += (lastMouseX - state.X) / 2;
+                _angleX += (_lastMouseY - state.Y) / 2;
+                _angleY += (_lastMouseX - state.X) / 2;
                 
-                lastMouseX = state.X;
-                lastMouseY = state.Y;
+                _lastMouseX = state.X;
+                _lastMouseY = state.Y;
 
                 RotateView();
             }

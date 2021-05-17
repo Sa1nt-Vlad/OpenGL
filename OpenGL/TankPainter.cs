@@ -123,6 +123,36 @@ namespace OpenGL
             /* 30 */ new Vector3(0.21f, 0f, 0.9f),
         };
 
+        private static readonly Vector3[] detailsPoints = {
+            /* 0 */ Vector3.Zero,
+            /* 1 */ new Vector3(0.25f, 0.23f, -0.2f), 
+            /* 2 */ new Vector3(0.25f, 0.23f, 0.15f), 
+            /* 3 */ new Vector3(0.03f, 0.23f, 0.15f),
+            /* 4 */ new Vector3(0.03f, 0.23f, -0.2f),
+            /* 5 */ new Vector3(0.25f, 0.2f, -0.2f),
+            /* 6 */ new Vector3(0.25f, 0.2f, 0.15f),
+            /* 7 */ new Vector3(0.03f, 0.2f, 0.15f),
+            /* 8 */ new Vector3(0.03f, 0.2f, -0.2f),
+        };
+        
+        private static readonly Vector3[] details2Points = {
+            /* 0 */ Vector3.Zero,
+            /* 1 */ new Vector3(0, 0.3f, 0.28f), 
+            /* 2 */ new Vector3(0.04f, 0.3f, 0.28f), 
+            /* 3 */ new Vector3(0.04f, 0.33f, 0.28f),
+            /* 4 */ new Vector3(0, 0.33f, 0.28f),
+            /* 5 */ new Vector3(0.07f, 0.3f, 0.28f),
+            /* 6 */ new Vector3(0.07f, 0.38f, 0.28f),
+            /* 7 */ new Vector3(0.04f, 0.38f, 0.28f),
+            /* 8 */ new Vector3(0.05f, 0.38f, 0.95f),
+            /* 9 */ new Vector3(0.07f, 0.38f, 0.95f),
+            /* 10 */ new Vector3(0.07f, 0.3f, 0.95f),
+            /* 11 */ new Vector3(0.05f, 0.3f, 0.95f),
+            /* 12 */ new Vector3(0.05f, 0.33f, 0.95f),
+            /* 13 */ new Vector3(0, 0.33f, 0.95f),    
+            /* 14 */ new Vector3(0, 0.3f, 0.95f)
+        };
+        
         public static void DrawTank(double turretAngle)
         {
             DrawCorpus();
@@ -135,12 +165,59 @@ namespace OpenGL
 
         private static void DrawDetails()
         {
-            // две решетки спереди
+            // детали спереди
+            GL.Color3(Color.Coral);
+            GL.BindTexture(TextureTarget.Texture2D, TankGameWindow.TextureIds[3]);
             
+            GL.Begin(PrimitiveType.Quads);
+            MakeSquare(detailsPoints[1], detailsPoints[2], detailsPoints[3], detailsPoints[4]);
+            MakeSquare(detailsPoints[1], detailsPoints[2], detailsPoints[3], detailsPoints[4], true);
+            GL.End();
+
+            GL.BindTexture(TextureTarget.Texture2D, TankGameWindow.TextureIds[0]);
+            GL.Begin(PrimitiveType.Quads);
+            MakeSquare(detailsPoints[1], detailsPoints[2], detailsPoints[6], detailsPoints[5]);
+            MakeSquare(detailsPoints[1], detailsPoints[4], detailsPoints[8], detailsPoints[5]);
+            MakeSquare(detailsPoints[4], detailsPoints[8], detailsPoints[7], detailsPoints[3]);
+            MakeSquare(detailsPoints[3], detailsPoints[7], detailsPoints[6], detailsPoints[2]);
+            
+            MakeSquare(detailsPoints[1], detailsPoints[2], detailsPoints[6], detailsPoints[5], true);
+            MakeSquare(detailsPoints[1], detailsPoints[4], detailsPoints[8], detailsPoints[5], true);
+            MakeSquare(detailsPoints[4], detailsPoints[8], detailsPoints[7], detailsPoints[3], true);
+            MakeSquare(detailsPoints[3], detailsPoints[7], detailsPoints[6], detailsPoints[2], true);
+            GL.End();
+            
+            GL.BindTexture(TextureTarget.Texture2D, TankGameWindow.TextureIds[1]);
+            Painter.PaintCylinder(Axis.Y, new Vector3(0, 0.19f, -0.4f), 0.12f, 0.08f, Color.Aqua, Color.Aqua);
             
             // держатель орудия
             
+            GL.BindTexture(TextureTarget.Texture2D, TankGameWindow.TextureIds[5]);
+            GL.Begin(PrimitiveType.Quads);
             
+            MakeSquare(details2Points[1], details2Points[2], details2Points[3], details2Points[4]);
+            MakeSquare(details2Points[2], details2Points[5], details2Points[6], details2Points[7]);
+            MakeSquare(details2Points[8], details2Points[9], details2Points[10], details2Points[11]);
+            MakeSquare(details2Points[11], details2Points[12], details2Points[13], details2Points[14]);
+            MakeSquare(details2Points[1], details2Points[2], details2Points[3], details2Points[4], true);
+            MakeSquare(details2Points[2], details2Points[5], details2Points[6], details2Points[7], true);
+            MakeSquare(details2Points[8], details2Points[9], details2Points[10], details2Points[11], true);
+            MakeSquare(details2Points[11], details2Points[12], details2Points[13], details2Points[14], true);
+            MakeSquare(details2Points[1], details2Points[5], details2Points[10], details2Points[14]);
+            MakeSquare(details2Points[3], details2Points[4], details2Points[13], details2Points[12]);
+            MakeSquare(details2Points[6], details2Points[7], details2Points[8], details2Points[9]);
+            MakeSquare(details2Points[5], details2Points[6], details2Points[9], details2Points[10]);
+            MakeSquare(details2Points[3], details2Points[7], details2Points[8], details2Points[12]);
+            MakeSquare(details2Points[1], details2Points[5], details2Points[10], details2Points[14], true);
+            MakeSquare(details2Points[3], details2Points[4], details2Points[13], details2Points[12], true);
+            MakeSquare(details2Points[6], details2Points[7], details2Points[8], details2Points[9], true);
+            MakeSquare(details2Points[5], details2Points[6], details2Points[9], details2Points[10], true);
+            MakeSquare(details2Points[3], details2Points[7], details2Points[8], details2Points[12], true);
+            
+            GL.End();
+            
+            GL.BindTexture(TextureTarget.Texture2D, TankGameWindow.TextureIds[5]);
+            Painter.PaintCube(new Vector3(0, 0.2f, 0.45f), 0.2f);
         }
 
         private static void DrawTower()

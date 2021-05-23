@@ -132,6 +132,30 @@ namespace OpenGL
             GL.End();
         }
 
+        public static void PaintPolygon(int sides, float radius, float x, float y, bool isFilled)
+        {
+            if (isFilled)
+            {
+                GL.Begin(PrimitiveType.Polygon);
+                var step = (2 * Math.PI) / sides;
+                for (var i = 0; i < sides; ++i)
+                {
+                    GL.Vertex2(radius * Math.Cos(i * step) + x, radius * Math.Sin(i * step) + y);
+                }
+                GL.End();
+            }
+            else
+            {
+                GL.Begin(PrimitiveType.LineLoop);
+                var step = (2 * Math.PI) / sides;
+                for (var i = 0; i < sides; ++i)
+                {
+                    GL.Vertex2(radius * Math.Cos(i * step) + x, radius * Math.Sin(i * step) + y);
+                }
+                GL.End();
+            }
+        }
+        
         public static void PaintRegularPyramid(Vector3 center, float sideSize, int sideCount)
         {
             var angle = 360 / sideCount;
